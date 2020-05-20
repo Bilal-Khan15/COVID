@@ -5,13 +5,47 @@ import jwt
 import datetime
 import peewee as pw
 from functools import wraps
-
+import datetime
 from VerificationEmai import send_email
 from TokenGenerator import token_generator
 
 # Connect to MySQL DB
 DB_NAME = "covid"
 db = pw.MySQLDatabase(DB_NAME, host="localhost", port=3306, user="root", passwd="root")
+
+
+# Triage Model
+class Triage(pw.Model):
+    fname = pw.TextField()
+    lname = pw.TextField()
+    sex = pw.TextField()
+    dob = pw.TextField()
+    mobile = pw.CharField()
+    email = pw.CharField()
+    address = pw.TextField()
+    id_number = pw.CharField()
+    nig = pw.BooleanField()
+    fever = pw.BooleanField()
+    cough = pw.BooleanField()
+    breath = pw.BooleanField()
+    other = pw.TextField()
+    travel = pw.BooleanField()
+    contact_case = pw.BooleanField()
+    hf = pw.BooleanField()
+    status = pw.TextField()
+    reg_date = pw.TextField()
+    evacuate = pw.TextField()
+    discharge = pw.TextField()
+    epid = pw.TextField()
+    center = pw.TextField()
+    outcome = pw.TextField()
+    current_status = pw.TextField()
+
+    class Meta:
+        database = db
+
+# Create Triage Table
+Triage.create_table()
 
 
 # User Model
@@ -27,38 +61,17 @@ class User(pw.Model):
     class Meta:
         database = db
 
-
 # Create User Table
 User.create_table()
+
+
+# db.create_tables([User, Triage])
 
 # Flask App
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'thisissecret'  # Secret Key for JWT
 app.config['DOMAIN'] = '127.0.0.1:5000'  # Domain Name
-
-
-# Protected Routes Wrapper to Check JWT Token
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-
-        if not token:
-            return jsonify({'message': 'Not Allowed'}), 401
-
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-            current_user = User.get(User.email == data['email'])
-        except:
-            return jsonify({'message': 'Invalid Token'}), 401
-
-        return f(current_user, *args, **kwargs)
-
-    return decorated
 
 
 # Route to create user
@@ -115,6 +128,167 @@ def login():
     return jsonify({'token': token.decode('UTF-8')})
 
 
+@app.route('/checkEmail', methods=['POST'])
+def check_email():
+    data = request.get_json()
+
+    # Validate Request
+    if (data['email'] == ''):
+        return make_response('Error: Form Fields Missing', 400)
+
+    query = User.select().where(User.email == data['email'])  # Check if user exists
+    if query.exists():
+        return jsonify({'message': 'User verified!', "user": data})
+
+    # Return Response
+    return make_response('Error: User does not exist ', 400)
+
+
+# Reset Password
+@app.route('/resetPassword', methods=['PUT'])
+def reset_password():
+
+    data = request.get_json()    # Get Request Fields
+
+    # Validate Request
+    if (data['email'] == '' or data['password'] == '' or data['confirm_password'] == ''):
+        return make_response('Error: Form Fields Missing', 400)
+
+    # Check if passwords match
+    if data['password'] != data['confirm_password']:
+        return make_response('Error: Passwords Mismatched', 400)
+
+    # Hash Password
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+
+    # Update Password
+    user = User.get(User.email == data['email'])
+    user.password = hashed_password
+    user.save()
+
+    return jsonify({'Message': 'Password has been updated'})
+
+
+# Route to create triage
+@app.route('/createTriage', methods=['POST'])
+def create_triage():
+    data = request.get_json()
+    status = ""
+    reg_date = str(datetime.datetime.now()).split(" ")[0]
+
+    # Validate Request
+    if (data['fname'] == '' or data['lname'] == '' or data['sex'] == '' or data['dob'] == '' or data['mobile'] == '' or data['email'] == '' or data['address'] == '' or data['id'] == '' or data['nig'] == ''):
+        return make_response('Error: Form Fields Missing', 400)
+
+    query = Triage.select().where(Triage.email == data['email'])  # Check if user exists
+    if query.exists():
+        return make_response('Error: Email Already Exists', 400)
+
+    if((data["fever"] or data["cough"] or data["breath"]) and (data["travel"] or data["contact_case"] or data["hf"])):
+        status = "High risk"
+    else:
+        status = "Low risk"
+        
+    # Create Entry
+    Triage.create_table()
+    triage = Triage(fname=data['fname'], lname=data['lname'], sex=data['sex'], dob=data['dob'], mobile=data['mobile'], email=data['email'], address=data['address'], id_number=data['id'], nig=data['nig'], fever=data['fever'], cough=data['cough'], breath=data['breath'], other=data['other'], travel=data['travel'], contact_case=data['contact_case'], hf=data['hf'], status=status, reg_date=reg_date, evacuate="", discharge="", epid="", center="", outcome="", current_status="Suspected")
+    triage.save()
+
+    # Return Response
+    return jsonify({'message': 'New triage registered!', "status": status})
+
+
+@app.route('/triage')
+def triage():
+    cases = []
+    
+    query = Triage.select().dicts()
+    for user in query:
+        cases.append(user)
+
+    # Return Response
+    return jsonify({"triage": cases})
+
+
+@app.route('/updateSymptoms', methods=['PUT'])
+def update_symptoms():
+
+    data = request.get_json()    # Get Request Fields
+
+    # Update Symptoms
+    triage = Triage.get(Triage.email == data['email'])
+    triage.fever = data['fever']
+    triage.cough = data['cough']
+    triage.breath = data['breath']
+    triage.other = data['other']
+    triage.outcome = data['outcome']
+    triage.save()
+
+    return jsonify({'Message': 'Triage has been updated'})
+
+
+@app.route('/updateEpid', methods=['PUT'])
+def update_epid():
+
+    data = request.get_json()    # Get Request Fields
+
+    # Update Symptoms
+    triage = Triage.get(Triage.email == data['email'])
+    triage.evacuate = data['evacuate']
+    triage.discharge = data['discharge']
+    triage.epid = data['epid']
+    triage.center = data['center']
+    triage.save()
+
+    return jsonify({'Message': 'Triage has been updated'})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Protected Routes Wrapper to Check JWT Token
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+
+        if not token:
+            return jsonify({'message': 'Not Allowed'}), 401
+
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+            current_user = User.get(User.email == data['email'])
+        except:
+            return jsonify({'message': 'Invalid Token'}), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+
 # Route to activate user account
 @app.route('/activate/<token>', methods=['GET'])
 def activate_user(token):
@@ -132,42 +306,11 @@ def activate_user(token):
     return make_response('Error: Invalid Token', 400)
 
 
-
-
 # Protected Route
 @app.route('/protected', methods=['POST'])
 @token_required
 def protected_route(current_user):
     return jsonify({'name': current_user.name, 'email': current_user.email})
-
-
-
-
-
-
-# Reset Password
-@app.route('/resetPassword', methods=['PUT'])
-@token_required
-def reset_password(current_user):
-
-    data = request.get_json()    # Get Request Fields
-
-    # Check if passwords match
-    if data['password'] != data['confirm_password']:
-        return make_response('Error: Passwords Mismatched', 400)
-
-    # Hash Password
-    hashed_password = generate_password_hash(data['password'], method='sha256')
-
-    # Update Password
-    user = User.get(User.email == current_user.email)
-    user.password = hashed_password
-    user.save()
-
-    return jsonify({'Message': 'Password has been updated'})
-
-
-
 
 
 # Delete User
