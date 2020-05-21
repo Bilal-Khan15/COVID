@@ -7,8 +7,6 @@ import datetime
 import peewee as pw
 from functools import wraps
 import datetime
-from VerificationEmai import send_email
-from TokenGenerator import token_generator
 
 # Connect to MySQL DB
 DB_NAME = "covid"
@@ -86,7 +84,8 @@ class User(pw.Model):
     mobile = pw.CharField()
     email = pw.CharField()
     password = pw.CharField()
-    token = pw.CharField()
+    user_name = pw.TextField()
+    enable = pw.BooleanField()
 
     class Meta:
         database = db
@@ -95,7 +94,29 @@ class User(pw.Model):
 User.create_table()
 
 
-# db.create_tables([User, Triage])
+# Group Model
+class Group(pw.Model):
+    name = pw.TextField()
+    role = pw.TextField()
+
+    class Meta:
+        database = db
+
+# Create Group Table
+Group.create_table()
+
+
+# Role Model
+class Role(pw.Model):
+    name = pw.TextField()
+    role = pw.TextField()
+
+    class Meta:
+        database = db
+
+# Create Group Table
+Role.create_table()
+
 
 # Flask App
 app = Flask(__name__)
@@ -111,11 +132,15 @@ def create_user():
     data = request.get_json()
 
     # Validate Request
-    if (data['fname'] == '' or data['lname'] == '' or data['institution'] == '' or data['mobile'] == '' or data['email'] == '' or data['password'] == '' or data['confirm_password'] == ''):
+    if (data['user_name'] == '' or data['fname'] == '' or data['lname'] == '' or data['institution'] == '' or data['mobile'] == '' or data['email'] == '' or data['password'] == '' or data['confirm_password'] == ''):
         return make_response('Error: Form Fields Missing', 400)
 
     if data['password'] != data['confirm_password']:
         return make_response('Error: Passwords Mismatched', 400)
+
+    query = User.select().where(User.user_name == data['user_name'])  # Check if user exists
+    if query.exists():
+        return make_response('Error: Username Already Exists', 400)
 
     query = User.select().where(User.email == data['email'])  # Check if user exists
     if query.exists():
@@ -124,12 +149,9 @@ def create_user():
     # Hash Password
     hashed_password = generate_password_hash(data['password'], method='sha256')
 
-    # Generate Token for Email Verification
-    token = token_generator(32)
-
     # Create Entry
     User.create_table()
-    user = User(fname=data['fname'], lname=data['lname'], institution=data['institution'], mobile=data['mobile'], email=data['email'], password=hashed_password, token=token)
+    user = User(user_name=data['user_name'], fname=data['fname'], lname=data['lname'], institution=data['institution'], mobile=data['mobile'], email=data['email'], password=hashed_password, enable=True)
     user.save()
 
     # Return Response
@@ -137,27 +159,26 @@ def create_user():
 
 
 @cross_origin
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
-    auth = request.authorization
+    data = request.get_json()
 
-    if not auth or not auth.username or not auth.password:  # Check if request is valid
-        return make_response('Could not verify', 401, {'WWW-Authenticate': 'Basic realm="Login required!"'})
+    # Validate Request
+    if (data['user_name'] == '' or data['password'] == ''):
+        return make_response('Error: Form Fields Missing', 400)
 
     # Get User Info and Check Password
-    user = User.get(User.email == auth.username)
-    if not check_password_hash(user.password, auth.password):
+    user = User.get(User.user_name == data['user_name'])
+
+    if not check_password_hash(user.password, data['password']):
         return make_response('Invalid Credentials', 401)
 
-    # Generate JWT
-    token = jwt.encode({'email': auth.username, 'fname': user.fname, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3000)},
-                       app.config['SECRET_KEY'])
+    if not user.enable:
+        return make_response('User is not enable', 401)
 
-    # Update User Token
-    user.token = token
     user.save()
 
-    return jsonify({'token': token.decode('UTF-8')})
+    return jsonify({'user': user.email})
 
 
 @cross_origin
@@ -355,95 +376,165 @@ def case():
     return jsonify({"triage": cases})
 
 
-
-# triaged = Triage.select().dicts()
-# lab = Lab.select().dicts()
-# print(len(lab))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Protected Routes Wrapper to Check JWT Token
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-
-        if not token:
-            return jsonify({'message': 'Not Allowed'}), 401
-
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-            current_user = User.get(User.email == data['email'])
-        except:
-            return jsonify({'message': 'Invalid Token'}), 401
-
-        return f(current_user, *args, **kwargs)
-
-    return decorated
-
-
-# Route to activate user account
 @cross_origin
-@app.route('/activate/<token>', methods=['GET'])
-def activate_user(token):
-    # Get user by token
-    query = User.select().where(User.token == token)
+@app.route('/aggregate')
+def aggregate():
+    reg = Triage.select().dicts()
+    lab = Lab.select().dicts()
+    suspected = Triage.select().where(Triage.current_status == "Suspected").dicts()
+    probable = Lab.select().where(Lab.status == "Probable").dicts()
+    confirmed = Lab.select().where(Lab.status == "Confirmed").dicts()
+    test = Lab.select().dicts()
+    death = Triage.select().where(Triage.dead == True).dicts()
+    due = len(reg) - len(test)
 
-    # If user exists
-    if query.exists():
-        user = User.get(User.token == token)
-        user.is_active = True
-        user.token = token_generator(32)  # Update Token
-        user.save()
-        return jsonify({'message': 'User Activated', 'Name': user.name})
-
-    return make_response('Error: Invalid Token', 400)
+    # Return Response
+    return jsonify({"reg": len(reg), "lab": len(lab), "suspected": len(suspected), "probable": len(probable), "confirmed": len(confirmed), "test": len(test), "death": len(death), "due": due})
 
 
-# Protected Route
 @cross_origin
-@app.route('/protected', methods=['POST'])
-@token_required
-def protected_route(current_user):
-    return jsonify({'name': current_user.name, 'email': current_user.email})
+@app.route('/users')
+def users():
+    cases = []
+    
+    query = User.select().dicts()
+    for user in query:
+        cases.append(user)
+
+    # Return Response
+    return jsonify({"Users": cases})
 
 
-# Delete User
 @cross_origin
-@app.route('/revoke', methods=['DELETE'])
-@token_required
-def delete_user(current_user):
-    if not current_user:
-        return jsonify({'message' : 'No user found!'})
+@app.route('/editUser', methods=['PUT'])
+def edit_user():
 
-    # Get User Records and delete it
-    user = User.get(User.email == current_user.email)
-    user.is_active = False
-    user.token = ''
+    data = request.get_json()    # Get Request Fields
+
+    # Update User
+    user = User.get(User.email == data['email'])
+    user.enable = data['enable']
+    user.institution = data['institution']
     user.save()
-    return jsonify({'message': 'The user has been deleted!'})
+
+    return jsonify({'Message': 'User has been updated'})
+
+
+@cross_origin
+@app.route('/search', methods=['POST'])
+def search():
+    data = request.get_json()
+    cases = []
+    
+    query = User.select().dicts()
+    for user in query:
+        if((user['email'] == data['search']) or (user['mobile'] == data['search']) or (user['user_name'] == data['search'])):
+            cases.append(user)
+
+    # Return Response
+    return jsonify({"user": cases})
+
+
+# Route to create Group
+@cross_origin
+@app.route('/createGroup', methods=['POST'])
+def create_group():
+    data = request.get_json()
+
+    # Validate Request
+    if (data['name'] == '' or data['role'] == ''):
+        return make_response('Error: Form Fields Missing', 400)
+
+    query = Group.select().where(Group.name == data['name'])  # Check if name exists
+    if query.exists():
+        return make_response('Error: Name Already Exists', 400)
+        
+    # Create Entry
+    Group.create_table()
+    group = Group(name=data['name'], role=data['role'])
+    group.save()
+
+    # Return Response
+    return jsonify({'message': 'New group registered!'})
+
+
+@cross_origin
+@app.route('/editGroup', methods=['PUT'])
+def edit_group():
+    data = request.get_json()    # Get Request Fields
+
+    # Update role
+    group = Group.get(Group.name == data['name'])
+    group.role = data['role']
+    group.save()
+
+    return jsonify({'Message': 'Group has been updated'})
+
+
+@cross_origin
+@app.route('/groups')
+def groups():
+    cases = []
+    
+    query = Group.select().dicts()
+    for user in query:
+        cases.append(user)
+
+    # Return Response
+    return jsonify({"Group": cases})
+
+
+# Route to create Role
+@cross_origin
+@app.route('/createRole', methods=['POST'])
+def create_role():
+    data = request.get_json()
+
+    # Validate Request
+    if (data['name'] == '' or data['role'] == ''):
+        return make_response('Error: Form Fields Missing', 400)
+
+    query = Role.select().where(Role.name == data['name'])  # Check if name exists
+    if query.exists():
+        return make_response('Error: Name Already Exists', 400)
+        
+    # Create Entry
+    Role.create_table()
+    role = Role(name=data['name'], role=data['role'])
+    role.save()
+
+    # Return Response
+    return jsonify({'message': 'New role registered!'})
+
+
+@cross_origin
+@app.route('/editRole', methods=['PUT'])
+def edit_role():
+    data = request.get_json()    # Get Request Fields
+
+    # Update Role
+    role = Role.get(Role.name == data['name'])
+    role.role = data['role']
+    role.save()
+
+    return jsonify({'Message': 'Role has been updated'})
+
+
+@cross_origin
+@app.route('/roles')
+def roles():
+    cases = []
+    
+    query = Role.select().dicts()
+    for user in query:
+        cases.append(user)
+
+    # Return Response
+    return jsonify({"Role": cases})
+
+
+
+
 
 
 if __name__ == '__main__':
