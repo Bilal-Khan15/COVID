@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS, cross_origin
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
@@ -32,6 +33,7 @@ class Triage(pw.Model):
     travel = pw.BooleanField()
     contact_case = pw.BooleanField()
     hf = pw.BooleanField()
+    dead = pw.BooleanField()
     status = pw.TextField()
     reg_date = pw.TextField()
     evacuate = pw.TextField()
@@ -40,12 +42,40 @@ class Triage(pw.Model):
     center = pw.TextField()
     outcome = pw.TextField()
     current_status = pw.TextField()
+    throat = pw.BooleanField()
+    hospital = pw.TextField()
 
     class Meta:
         database = db
 
 # Create Triage Table
 Triage.create_table()
+
+
+# Triage Model
+class Lab(pw.Model):
+    email = pw.CharField()
+    types = pw.TextField()
+    condition = pw.TextField()
+    collection_date = pw.TextField()
+    lab_date = pw.TextField()
+    epid = pw.TextField()
+    test = pw.TextField()
+    viral = pw.TextField()
+    diagnosis = pw.TextField()
+    fever = pw.BooleanField()
+    cough = pw.BooleanField()
+    breath = pw.BooleanField()
+    travel = pw.BooleanField()
+    contact_case = pw.BooleanField()
+    hf = pw.BooleanField()
+    status = pw.TextField()
+
+    class Meta:
+        database = db
+
+# Create Triage Table
+Lab.create_table()
 
 
 # User Model
@@ -75,6 +105,7 @@ app.config['DOMAIN'] = '127.0.0.1:5000'  # Domain Name
 
 
 # Route to create user
+@cross_origin
 @app.route('/user', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -105,6 +136,7 @@ def create_user():
     return jsonify({'message': 'New user created!', "user": data})
 
 
+@cross_origin
 @app.route('/login')
 def login():
     auth = request.authorization
@@ -128,6 +160,7 @@ def login():
     return jsonify({'token': token.decode('UTF-8')})
 
 
+@cross_origin
 @app.route('/checkEmail', methods=['POST'])
 def check_email():
     data = request.get_json()
@@ -145,6 +178,7 @@ def check_email():
 
 
 # Reset Password
+@cross_origin
 @app.route('/resetPassword', methods=['PUT'])
 def reset_password():
 
@@ -170,6 +204,7 @@ def reset_password():
 
 
 # Route to create triage
+@cross_origin
 @app.route('/createTriage', methods=['POST'])
 def create_triage():
     data = request.get_json()
@@ -191,13 +226,28 @@ def create_triage():
         
     # Create Entry
     Triage.create_table()
-    triage = Triage(fname=data['fname'], lname=data['lname'], sex=data['sex'], dob=data['dob'], mobile=data['mobile'], email=data['email'], address=data['address'], id_number=data['id'], nig=data['nig'], fever=data['fever'], cough=data['cough'], breath=data['breath'], other=data['other'], travel=data['travel'], contact_case=data['contact_case'], hf=data['hf'], status=status, reg_date=reg_date, evacuate="", discharge="", epid="", center="", outcome="", current_status="Suspected")
+    triage = Triage(fname=data['fname'], lname=data['lname'], sex=data['sex'], dob=data['dob'], mobile=data['mobile'], email=data['email'], address=data['address'], id_number=data['id'], nig=data['nig'], fever=data['fever'], cough=data['cough'], breath=data['breath'], other=data['other'], travel=data['travel'], contact_case=data['contact_case'], hf=data['hf'], dead=False, throat=False, hospital="", status=status, reg_date=reg_date, evacuate="", discharge="", epid="", center="", outcome="", current_status="Suspected")
     triage.save()
 
     # Return Response
     return jsonify({'message': 'New triage registered!', "status": status})
 
 
+@cross_origin
+@app.route('/dead', methods=['PUT'])
+def dead():
+
+    data = request.get_json()    # Get Request Fields
+
+    # Update Symptoms
+    triage = Triage.get(Triage.email == data['email'])
+    triage.dead = data['dead']
+    triage.save()
+
+    return jsonify({'Message': 'Triage has been updated'})
+
+
+@cross_origin
 @app.route('/triage')
 def triage():
     cases = []
@@ -210,6 +260,7 @@ def triage():
     return jsonify({"triage": cases})
 
 
+@cross_origin
 @app.route('/updateSymptoms', methods=['PUT'])
 def update_symptoms():
 
@@ -218,15 +269,19 @@ def update_symptoms():
     # Update Symptoms
     triage = Triage.get(Triage.email == data['email'])
     triage.fever = data['fever']
+    triage.throat = data['throat']
     triage.cough = data['cough']
     triage.breath = data['breath']
     triage.other = data['other']
+    triage.hospital = data['hospital']
     triage.outcome = data['outcome']
+    triage.dead = data['dead']
     triage.save()
 
     return jsonify({'Message': 'Triage has been updated'})
 
 
+@cross_origin
 @app.route('/updateEpid', methods=['PUT'])
 def update_epid():
 
@@ -243,7 +298,67 @@ def update_epid():
     return jsonify({'Message': 'Triage has been updated'})
 
 
+@cross_origin
+@app.route('/suspected')
+def suspected():
+    cases = []
+    
+    query = Triage.select().dicts()
+    for user in query:
+        if(user['current_status'] == "Suspected"):
+            cases.append(user)
 
+    # Return Response
+    return jsonify({"triage": cases})
+
+
+# Route to create lab
+@cross_origin
+@app.route('/createLab', methods=['POST'])
+def create_lab():
+    data = request.get_json()
+    status = ""
+
+    # Validate Request
+    if (data['email'] == '' or data['types'] == '' or data['condition'] == '' or data['collection_date'] == '' or data['lab_date'] == '' or data['epid'] == '' or data['test'] == '' or data['viral'] == '' or data['diagnosis'] == ''):
+        return make_response('Error: Form Fields Missing', 400)
+
+    query = Lab.select().where(Lab.email == data['email'])  # Check if user exists
+    if query.exists():
+        return make_response('Error: Email Already Exists', 400)
+
+    if((data["fever"] or data["cough"] or data["breath"]) and (data["travel"] or data["contact_case"] or data["hf"]) and data['test'] == 'positive'):
+        status = "Confirmed"
+    else:
+        status = "Probable"
+        
+    # Create Entry
+    Lab.create_table()
+    lab = Lab(email=data['email'], types=data['types'], condition=data['condition'], collection_date=data['collection_date'], lab_date=data['lab_date'], epid=data['epid'], test=data['test'], viral=data['viral'], diagnosis=data['diagnosis'], fever=data['fever'], cough=data['cough'], breath=data['breath'], travel=data['travel'], contact_case=data['contact_case'], hf=data['hf'], status=status)
+    lab.save()
+
+    # Return Response
+    return jsonify({'message': 'New Lab registered!', "status": status})
+
+
+@cross_origin
+@app.route('/case', methods=['POST'])
+def case():
+    data = request.get_json()
+    cases = []
+    
+    query = Triage.select().where(Triage.id_number == data['id']).dicts()
+    for user in query:
+        cases.append(user)
+
+    # Return Response
+    return jsonify({"triage": cases})
+
+
+
+# triaged = Triage.select().dicts()
+# lab = Lab.select().dicts()
+# print(len(lab))
 
 
 
@@ -290,6 +405,7 @@ def token_required(f):
 
 
 # Route to activate user account
+@cross_origin
 @app.route('/activate/<token>', methods=['GET'])
 def activate_user(token):
     # Get user by token
@@ -307,6 +423,7 @@ def activate_user(token):
 
 
 # Protected Route
+@cross_origin
 @app.route('/protected', methods=['POST'])
 @token_required
 def protected_route(current_user):
@@ -314,6 +431,7 @@ def protected_route(current_user):
 
 
 # Delete User
+@cross_origin
 @app.route('/revoke', methods=['DELETE'])
 @token_required
 def delete_user(current_user):
