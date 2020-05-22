@@ -179,7 +179,7 @@ def login():
 
     user.save()
 
-    return jsonify({'user': user.institution})
+    return jsonify({'user': user.institution,'email':user.email})
 
 
 @cross_origin
