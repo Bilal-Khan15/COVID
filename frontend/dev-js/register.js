@@ -8,7 +8,7 @@ $(document).ready(()=>{
     $("input[type='checkbox']").change(function(){
         let val = $(this).val()
         if(val==="throat"){
-            if(throat){
+            if(!throat){
                 throat = true
             }
             else{
@@ -16,7 +16,7 @@ $(document).ready(()=>{
             }
         }
         else if(val==="cough"){
-            if(cough){
+            if(!cough){
                 cough = true
             }
             else{
@@ -24,7 +24,7 @@ $(document).ready(()=>{
             }
         }
         else if(val==="fever"){
-            if(fever){
+            if(!fever){
                 fever = true
             }
             else{
@@ -32,7 +32,7 @@ $(document).ready(()=>{
             }
         }   
         else if(val==="breath"){
-            if(breath){
+            if(!breath){
                 breath = true
             }
             else{
@@ -40,7 +40,7 @@ $(document).ready(()=>{
             }
         }           
         else if(val==="contact_case"){
-            if(contact_case){
+            if(!contact_case){
                 contact_case = true
             }
             else{
@@ -48,7 +48,7 @@ $(document).ready(()=>{
             }
         }    
         else if(val==="travel"){
-            if(travel){
+            if(!travel){
                 travel = true
             }
             else{
@@ -56,7 +56,7 @@ $(document).ready(()=>{
             }
         }        
         else if(val==="hf"){
-            if(hf){
+            if(!hf){
                 hf = true
             }
             else{
@@ -67,7 +67,16 @@ $(document).ready(()=>{
             nig = val
             console.log(nig)    
         }
-    
+        else if(val==="dead"){
+            if(!dead){
+                dead = true
+                console.log(dead)
+            }
+            else{
+                dead= false
+                console.log(dead)
+            }
+        }
     })
     
 
@@ -100,6 +109,11 @@ $(document).ready(()=>{
         }
         console.log(packet)
         api.createTriage(packet)
+    })
+    $('.save').click(function(e){
+        let packet={email:$("#email").val(), dead: dead}
+        console.log(packet)
+        api.dead(packet )
     })
 
     

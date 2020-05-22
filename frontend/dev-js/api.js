@@ -1,33 +1,13 @@
 let url = "http://127.0.0.1:5000/"
 class API{
 
-    login = ( payload )=>{
-        
-        return axios.post(url+'login', payload,{
-            headers:{
-                "Content-Type" : "application/json",
-            },
-        })
-        .then(response=>{
-            console.log(response)
-            return response
-        })
-        .catch(err=>{
-            console.log(err.response)
-            return err.response
-        })
-
-    }
-
 
     getTriage = ()=>{
 
         return axios.get(url+'triage')
 
     }
-    
-    
-
+       
     updateEpid = ()=>{
 
         axios.post(url+'updateEpid',payload,{
@@ -69,6 +49,28 @@ class API{
 
     }
 
+    // Laboratory
+    createLab = (payload)=>{
+
+        return axios.post(url+'createLab',payload,{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+        .then(response=>{
+            console.log(response)
+            return response
+            // $('.add_success').show()
+            // setTimeout(()=>{
+            //     // window.location.href = './Laboratory officer.html'
+            // },1000)
+        
+        })
+        .catch(err=>{
+            console.log(err.response)            
+        })
+
+    }
     
     // triage
     createTriage = (payload)=>{
@@ -80,9 +82,12 @@ class API{
         })
         .then(response=>{
             console.log(response)
-            $('.add_success').show()
+            $('.edit_success').show()
+            $('#status_result').html(response.data.status)
+            $('#myModal').modal()
             setTimeout(()=>{
-                window.location.href = './Field Worker.html'
+                
+                // window.location.href = './Field Worker.html'
             },1000)
         
         })
@@ -115,7 +120,50 @@ class API{
      
     }
 
+    updateEpid = (payload)=>{
+        
+        axios.put(url+'updateEpid',payload,{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+        .then(response=>{
+            console.log(response)
+        
+            $('.edit_success').show()
+            setTimeout(()=>{
+                window.location.href="./State Epidemiologist.html"
+            },1000)
+        
+            
+        })
+        .catch(err=>{
+            console.log(err.response)            
+        })
+     
+    }
 
+    dead =  (payload)=>{
+        axios.put(url+'dead',payload,{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+        .then(response=>{
+            console.log(response)
+        
+            $('.edit_success1').show()
+            setTimeout(()=>{
+                // window.location.href="./followup.html"
+            },1000)
+        
+            
+        })
+        .catch(err=>{
+            console.log(err.response)            
+        })
+     
+    }
     // Users
     createUser = ( payload )=>{
 
@@ -212,7 +260,34 @@ class API{
         })
     
     } 
+
+    resetPassword = (payload)=>{
+        axios.put(url+'resetPassword',payload,{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+        .then(response=>{
+            console.log(response)
+        
+            $('.edit_success').show()
+            setTimeout(function(){ window.location.href="./login.html"  }, 1000);
+        
+            
+        })
+        .catch(err=>{
+            console.log(err.response) 
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            $('.alert-info').show()
+            $('.alert-success').hide()
+            $('.alert-warning').hide()
+            $('.alert-danger').hide()
+            setTimeout(function(){ x.className = x.className.replace("show", "");  }, 5000);
+            setTimeout(function(){ window.location.href="./signup.html"  }, 1000);
+        })
     
+    }
 
     // Roles
     createRole = ( payload )=>{

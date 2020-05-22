@@ -77,42 +77,46 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-8 ml-auto mr-auto">
-                                        <div class="row">
-                                            <div class="col-md-6">
+                                    <div class="col-md-4 ml-auto mr-auto">
+                                          <form id="create">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Type of specimen" id="email" required>
+                                                    <label for="">Type of specimen</label>
+                                                    <input type="text" class="form-control" placeholder="Type of specimen" id="types" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Specimen condition" id="email" required>
+                                                    <label for="">Specimen condition</label>
+                                                    <input type="text" class="form-control" placeholder="Specimen condition" id="condition" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Date collected" id="email" required>
+                                                    <label for="">Date collected</label>
+                                                    <input type="date" class="form-control" placeholder="Date collected" id="collection_date" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Date sent to Lab" id="email" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Epid no." id="email" required>
+                                                    <label for="">Date sent to Lab</label>
+                                                    <input type="date" class="form-control" placeholder="Date sent to Lab" id="lab_date" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Test conducted" id="email" required>
+                                                    <label for="">Epid no.</label>
+                                                    <input type="text" class="form-control" placeholder="Epid no." id="epid" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Viral detection" id="email" required>
+                                                    <label for="">Test conducted</label>
+                                                    <input type="text" class="form-control" placeholder="Test conducted" id="test" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder="Differential diagnosis" id="email" required>
+                                                    <label for="">Viral detection</label>
+                                                    <input type="text" class="form-control" placeholder="Viral detection" id="viral" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">Differential diagnosis</label>
+                                                    <input type="text" class="form-control" placeholder="Differential diagnosis" id="diagnosis" required>
                                                 </div>
                                                 
-                                            </div>
                                         
                                             <div class="form-group ml-3">
-                                                <button class="btn btn-primary">Update Case</button>
+                                                <button type="submit" class="btn btn-primary update_case">Update Case</button>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>                                   
                                 </div>
 
@@ -124,6 +128,28 @@
            
         </div>
     </div>
+         <!-- Sart Modal -->
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header ">
+                        <h4 class="title">Laboratory Result</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning edit_success" role="alert">
+                            <div class="container">
+                                <strong id="status_result"></strong>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
   <!--   Core JS Files   -->
   <script src="./assets/js/core/jquery.min.js"></script>
   <script src="./assets/js/core/popper.min.js"></script>

@@ -232,7 +232,7 @@
                                 </div>
                                 <div class="alert alert-success edit_success" role="alert" style="display: none;">
                                     <div class="container">
-                                        <strong>Edit Successfully!</strong>
+                                        <strong>Add Successfully!</strong>
                                     </div>
                                 </div>
                                 <button class="btn btn-primary update_case">Save</button>
@@ -245,6 +245,40 @@
            
         </div>
     </div>
+     <!-- Sart Modal -->
+     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h4 class="title">Status</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning " role="alert">
+                        <div class="container">
+                            <strong id="status_result"></strong>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="dead" id="dead">
+                        <span class="form-check-sign"></span>
+                        Dead 
+                        </label>
+                    </div>
+                    <div class="alert alert-success edit_success1 mt-3" role="alert" style="display: none;">
+                        <div class="container">
+                            <strong>Updated Successfully!</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
   <!--   Core JS Files   -->
   <script src="./assets/js/core/jquery.min.js"></script>
   <script src="./assets/js/core/popper.min.js"></script>

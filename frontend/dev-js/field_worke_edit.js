@@ -60,10 +60,11 @@ $(document).ready(()=>{
         $('#outcome').val(data.outcome)
     }
 
-    $("input[type='checkbox']").change(function(){
+    $("input[type='checkbox']").click(function(){
         let val = $(this).val()
+        console.log(val)
         if(val==="throat"){
-            if(throat){
+            if(!throat){
                 throat = true
             }
             else{
@@ -71,7 +72,7 @@ $(document).ready(()=>{
             }
         }
         else if(val==="cough"){
-            if(cough){
+            if(!cough){
                 cough = true
             }
             else{
@@ -79,7 +80,7 @@ $(document).ready(()=>{
             }
         }
         else if(val==="fever"){
-            if(fever){
+            if(!fever){
                 fever = true
             }
             else{
@@ -87,14 +88,14 @@ $(document).ready(()=>{
             }
         }   
         else if(val==="breath"){
-            if(breath){
+            if(!breath){
                 breath = true
             }
             else{
                 breath= false
             }
         }           
-        else if(val==="dead"){
+        else if(!val==="dead"){
             if(breath){
                 dead = true
             }

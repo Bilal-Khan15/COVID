@@ -2,6 +2,8 @@ $(document).ready(()=>{
 
     
     let api = new API()
+    let email = ''
+    let discharge = false, evacuate=false, epid='',center='';
 
     function getParameter(name){
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -28,23 +30,54 @@ $(document).ready(()=>{
     })    
     const setDetails = (data)=>{
         console.log(data)
+        email = data.email
         $('#case-status').html(data.current_status)
         if(data.evacuate)
             $('#evacuate').attr('checked',true)
         if(data.discharge)
             $('#discharge').attr('checked',true)
         
+    
+        epid = data.epid
+        center = data.center
+        discharge = data.discharge
+        evacuate = data.evacuate
         $('#epid').val(data.epid)
         $('#test-center').val(data.center)
+
     }
 
-    
-    let packet = {
-        "email": "email",
-        "evacuate": false,
-        "discharge": true,
-        "epid": "epid",
-        "center": "center"
-    }
+    $("input[type='checkbox']").change(function(){
+        let val = $(this).val()
+        console.log(val)
+        if(val==="evacuate"){
+            if(evacuate){
+                evacuate = true
+            }
+            else{
+                evacuate = false
+            }
+        }
+        else if(val==="discharge"){
+            if(discharge){
+                discharge = true
+            }
+            else{
+                discharge = false
+            }
+        }
+    })
+    $(document).on('click','.update_case',function(){
+
+        let packet = {
+            "email": email,
+            "evacuate": evacuate,
+            "discharge": discharge,
+            "epid": "epid",
+            "center": "center"
+        }
+        console.log(packet)
+        api.updateEpid(packet)
+    })
     
 })
