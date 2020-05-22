@@ -15,7 +15,7 @@ $(document).ready(()=>{
             htmlStr += '<td>'+element.fname+' '+element.lname+'</td>'
             htmlStr += '<td>'+element.id_number+'</td>'
             htmlStr += '<td>'+element.reg_date+'</td>'
-            htmlStr += '<td><a class="btn btn-primary" href="./field_work_info.html?id='+element.id+'" >Update</a></td>'
+            htmlStr += '<td><a class="btn btn-primary" href="./field_work_info.html?id='+element.id+'" >View Details</a></td>'
             htmlStr += '</tr>'
             $('#render-table').append(htmlStr)            
         });

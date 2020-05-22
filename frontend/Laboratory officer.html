@@ -24,8 +24,8 @@
   <link href="./assets/demo/demo.css" rel="stylesheet" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+
   <link rel="stylesheet" href="./dev-css/index.css">
-  
 </head>
 
 
@@ -43,7 +43,7 @@
                         <span class="navbar-toggler-bar bar3"></span>
                     </button>
                     </div>
-                    <a class="navbar-brand" href="#pablo">ADMIN | HOME</a>
+                    <a class="navbar-brand" href="#pablo">LABORATORY | HOME</a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -70,24 +70,37 @@
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card" >
+                        <div class="card" id="loader_card" style="padding: 50px;">
+                            <div class="card-body">
+                                <center>
+                                    <div class="loader"></div>
+                                </center>
+                            </div>
+                        </div>
+                        <div class="card" id="card_content"style="display:none;">
                             <div class="card-header ml-3">
-                                <h4 class="card-title"></h4>
+                                <h4 class="card-title ml-3"></h4>
                             </div>
                             <div class="card-body">
-                                <div class="col-md-4 ml-auto mr-auto" style="padding: 50px;">
-                                    <center>
-                                        <div class="form-group">
-                                            <a style="width: 100%;" class="btn btn-primary btn-round btn-md btn-block btn-lg" href="./users.html">Edit Users</a>
-                                        </div>
-                                        <div class="form-group">
-                                            <a style="width: 100%;" class="btn btn-primary btn-round btn-md btn-block btn-lg" href="./groups.html">Edit Groups</a>
-                                        </div>
-                                        <div class="form-group">
-                                            <a style="width: 100%;" class="btn btn-primary btn-round btn-md btn-block btn-lg" href="./roles.html">Edit Roles</a>
-                                        </div>
-                                           
-                                    </center>
+                                <div class="table-responsive">
+                                    <table id="example" class="table ">
+                                        <thead class="text-primary">
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Epid No.
+                                            </th>
+                                            <th>
+                                                Date
+                                            </th>
+                                            <th>
+                                                Update
+                                            </th>
+                                        </thead>
+                                        <tbody id="render-table">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -96,31 +109,13 @@
             </div>
         </div>
     </div>
-    
-    <!-- Sart Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header ">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                <i class="now-ui-icons ui-1_simple-remove"></i>
-              </button>
-              <h4 class="title title-up">ALERT</h4>
-            </div>
-            <div class="modal-body">
-              <p class="title">Please Enter Case</p>
-            </div>
-            <div class="modal-footer justify-content-right">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
   <!--   Core JS Files   -->
   <script src="./assets/js/core/jquery.min.js"></script>
   <script src="./assets/js/core/popper.min.js"></script>
   <script src="./assets/js/core/bootstrap.min.js"></script>
   <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
   <script src="./assets/js/plugins/chartjs.min.js"></script>
   <!--  Notifications Plugin    -->
@@ -134,6 +129,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
   <script src="./dev-js/api.js"></script>
   <script src="./dev-js/logout.js"></script>
+  <script src="./dev-js/laboratory.js"></script>
 
 </body>
 

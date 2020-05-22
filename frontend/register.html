@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    COVID WIREFRAME
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <!-- CSS Files -->
+  <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="./assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <!-- CSS Files -->
+
+  <link href="./assets_now_ui/css/now-ui-kit.css?v=1.3.0" rel="stylesheet" />
+  
+  <link href="./assets/demo/demo.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+  
+</head>
+
+<body class="" style="background-color: #ebecf1;">
+    <div class="wrapper ">
+        <div class="main-panel" id="main-panel">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+                <div class="container-fluid">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-toggle">
+                        <button type="button" class="navbar-toggler">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                        </div>
+                        <a class="navbar-brand" href="#pablo">FIELD WORKER | REGISTER CASE</a>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" id="logout">
+                                <i class="now-ui-icons users_single-02"></i> Logout
+                            <p>
+                                <span class="d-lg-none d-md-block"></span>
+                            </p>
+                            </a>
+                        </li>
+                        </ul>
+                    </div>
+                    </div>
+                </nav>
+                <!-- End Navbar -->
+                <div class="panel-header panel-header-sm">
+                </div>
+                <div class="content">
+                    <div class="row">
+                        
+                        
+                        <div class="col-md-12"> 
+                            <div class="card">
+                            <div class="card-header text-center">
+                                <h4 class="card-title title">REGISTER CASE</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col md-6">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" placeholder="First Name" id="fname" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Last Name" class="form-control" id="lname" required/>
+                                                </div>
+                                                <div class="form-group">
+                                                  <input type="email" class="form-control" placeholder="Email" id="email" required>
+                                                </div>
+                                                <div class="datepicker-container">
+                                                    <label>DOB</label>
+                                                    <div class="form-group">
+                                                      <input type="date" id="dob" class="form-control date-picker" data-datepicker-color="primary" placeholder="DOB">
+                                                    </div>
+                                                  </div>
+                                
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Mobile No." class="form-control" id="mobile" required/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Address" class="form-control" id="address" required/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="ID Number" class="form-control" id="epid_id" required/>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Gender
+                                            </label>
+                                            <div class="form-check form-check-radio">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="exampleRadios" id="gender" value="male">
+                                                <span class="form-check-sign"></span>
+                                                Male
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-radio">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="exampleRadios" id="gender" value="female">
+                                                    <span class="form-check-sign"></span>
+                                                    Female
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-radio">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="exampleRadios" id="gender" value="dk">
+                                                    <span class="form-check-sign"></span>
+                                                    Don't know
+                                                </label>
+                                            </div>
+                                            <label for="exampleInputEmail1 mt-3">
+                                                Nig. residence
+                                            </label>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="yes" id="nig">
+                                                <span class="form-check-sign"></span>
+                                                YES
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="no" id="nig">
+                                                <span class="form-check-sign"></span>
+                                                NO
+                                                </label>
+                                            </div>
+                                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Check All Presenting Symptoms
+                                            </label>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="fever" id="fever">
+                                                <span class="form-check-sign"></span>
+                                                Fever
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="throat" id="throat">
+                                                <span class="form-check-sign"></span>
+                                                Soar throat
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="cough" id="cough">
+                                                <span class="form-check-sign"></span>
+                                                Cough
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="breath" id="breath">
+                                                <span class="form-check-sign"></span>
+                                                Difficulty Breathing
+                                                </label>
+                                            </div> 
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="other" id="other">
+                                                <span class="form-check-sign"></span>
+                                                Other
+                                                </label>
+                                            </div>     
+                                            <div class="form-group mt-2">
+                                                <input type="text" value="" placeholder="Specify Other" class="form-control" id="other_val"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Check All Exposures within last 14 days
+                                            </label>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="travel" id="travel">
+                                                <span class="form-check-sign"></span>
+                                                History of travel 
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="contact_case" id="contact_case">
+                                                <span class="form-check-sign"></span>
+                                                Close contact with confirmed case
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" value="hf" id="hf">
+                                                <span class="form-check-sign"></span>
+                                                Exposed to COVID health facility
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                                <div class="alert alert-success edit_success" role="alert" style="display: none;">
+                                    <div class="container">
+                                        <strong>Edit Successfully!</strong>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary update_case">Save</button>
+
+                            </div>  
+                        </div>
+                    </div> 
+                </div>
+            </div>
+           
+        </div>
+    </div>
+  <!--   Core JS Files   -->
+  <script src="./assets/js/core/jquery.min.js"></script>
+  <script src="./assets/js/core/popper.min.js"></script>
+  <script src="./assets/js/core/bootstrap.min.js"></script>
+  <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Chart JS -->
+  <script src="./assets/js/plugins/chartjs.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="./assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="./assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
+  <script src="./assets/demo/demo.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+  <script src="./dev-js/api.js"></script>
+  <script src="./dev-js/logout.js"></script>
+  <script src="./dev-js/register.js"></script>
+ 
+</body>
+
+</html>

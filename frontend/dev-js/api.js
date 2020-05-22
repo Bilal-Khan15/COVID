@@ -3,75 +3,22 @@ class API{
 
     login = ( payload )=>{
         
-        axios.post(url+'login', payload,{
+        return axios.post(url+'login', payload,{
             headers:{
                 "Content-Type" : "application/json",
             },
         })
         .then(response=>{
             console.log(response)
-            $('.alert-success').show()
-            $('.alert-info').hide()
-            $('.alert-warning').hide()
-            $('.alert-danger').hide()
-            
-            if(response.data.user === "State Epidemiologist"){
-                setTimeout(()=>{    
-                    window.location.href = "./state_epid_landing.html"
-                },1500)
-    
-            }
-            else if(response.data.user === "State Officer"){
-                setTimeout(()=>{    
-                    window.location.href = "./state_officer_landing.html"
-                },1500)
-    
-            }
-            else if(response.data.user === "Field worker"){
-                setTimeout(()=>{    
-                    window.location.href = "./field_work_landing.html"
-                },1500)
-    
-            }
-            else if(response.data.user === "Laboratory officer"){
-                setTimeout(()=>{    
-                    window.location.href = "./laboratory_landing.html"
-                },1500)
-    
-            }
-            else if(response.data.user === "Admin"){
-                setTimeout(()=>{    
-                    window.location.href = "./field_work_landing.html"
-                },1500)
-    
-            }
-        
-
+            return response
         })
         .catch(err=>{
             console.log(err.response)
-            if(err.response.data==="User is not enable"){
-                var x = document.getElementById("snackbar");
-                x.className = "show";
-                $('.alert-info').hide()
-                $('.alert-success').hide()
-                $('.alert-warning').hide()
-                $('.alert-danger').show()
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-            }
-            
-            if(err.response.data==="Invalid Credentials"){
-                var x = document.getElementById("snackbar");
-                x.className = "show";
-                $('.alert-info').hide()
-                $('.alert-success').hide()
-                $('.alert-warning').show()
-                $('.alert-danger').hide()
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-            }
+            return err.response
         })
 
     }
+
 
     getTriage = ()=>{
 
@@ -79,6 +26,8 @@ class API{
 
     }
     
+    
+
     updateEpid = ()=>{
 
         axios.post(url+'updateEpid',payload,{
@@ -118,6 +67,52 @@ class API{
             console.log(err.response)
         })
 
+    }
+
+    
+    // triage
+    createTriage = (payload)=>{
+
+        axios.post(url+'createTriage',payload,{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+        .then(response=>{
+            console.log(response)
+            $('.add_success').show()
+            setTimeout(()=>{
+                window.location.href = './Field Worker.html'
+            },1000)
+        
+        })
+        .catch(err=>{
+            console.log(err.response)            
+        })
+
+    }
+
+    updateSymptoms = (payload)=>{
+        
+        axios.put(url+'updateSymptoms',payload,{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+        .then(response=>{
+            console.log(response)
+        
+            $('.edit_success').show()
+            setTimeout(()=>{
+                window.location.href="./followup.html"
+            },1000)
+        
+            
+        })
+        .catch(err=>{
+            console.log(err.response)            
+        })
+     
     }
 
 
