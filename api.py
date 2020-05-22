@@ -10,7 +10,7 @@ import datetime
 
 # Connect to MySQL DB
 DB_NAME = "covid"
-db = pw.MySQLDatabase(DB_NAME, host="localhost", port=3306, user="root", passwd="root")
+db = pw.MySQLDatabase(DB_NAME, host="localhost", port=3306, user="root", passwd="")
 
 
 # Triage Model
@@ -120,6 +120,7 @@ Role.create_table()
 
 # Flask App
 app = Flask(__name__)
+CORS(app)
 
 app.config['SECRET_KEY'] = 'thisissecret'  # Secret Key for JWT
 app.config['DOMAIN'] = '127.0.0.1:5000'  # Domain Name
@@ -178,7 +179,7 @@ def login():
 
     user.save()
 
-    return jsonify({'user': user.email})
+    return jsonify({'user': user.institution})
 
 
 @cross_origin
