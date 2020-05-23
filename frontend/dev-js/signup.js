@@ -6,7 +6,7 @@ $(document).ready(()=>{
 
     let response = api.getRoles().then(resolve=>{
         resolve.Role.forEach(element => {
-            $('#institution').append('<option style="color: black;">'+element.role+'</option>')
+            $('#institution').append('<option style="color: black;">'+element.name+'</option>')
         });
 
     })
@@ -23,7 +23,7 @@ $(document).ready(()=>{
         console.log($('#phone').val())
         if($('#password').val()===$('#repass').val()){
             let packet = {
-                "user_name": $('#fname').val() +' ' +$('#lname').val(), 
+                "user_name": $('#uname').val(), 
                 "fname": $('#fname').val(),
                 "lname": $('#lname').val(),
                 "institution": $('#institution').val(),

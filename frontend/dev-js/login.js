@@ -27,13 +27,15 @@ $(document).ready(()=>{
         })
         .then(response=>{
             console.log(response)
-            
             if(response.data.user.toLowerCase() === "state epidemiologist"){
                 $('.alert-success').show()
                 $('.alert-info').hide()
                 $('.alert-warning').hide()
                 $('.alert-danger').hide()
-                localStorage.setItem('email',response.data.email)
+                console.log($('#email').val(""))
+                console.log($('#password').val(""))
+                    
+                    localStorage.setItem('email',response.data.email)
                     setTimeout(()=>{    
                     window.location.href = "./State Epidemiologist.html"
                 },1500)
@@ -44,7 +46,10 @@ $(document).ready(()=>{
                 $('.alert-info').hide()
                 $('.alert-warning').hide()
                 $('.alert-danger').hide()
-                localStorage.setItem('email',response.data.email)
+                console.log($('#email').val(""))
+                console.log($('#password').val(""))
+                    
+                    localStorage.setItem('email',response.data.email)
                     setTimeout(()=>{    
                     window.location.href = "./State Officer.html"
                 },1500)
@@ -55,7 +60,10 @@ $(document).ready(()=>{
                 $('.alert-info').hide()
                 $('.alert-warning').hide()
                 $('.alert-danger').hide()
-                localStorage.setItem('email',response.data.email)
+                console.log($('#email').val(""))
+                console.log($('#password').val(""))
+                    
+                    localStorage.setItem('email',response.data.email)
                     setTimeout(()=>{    
                     window.location.href = "./Field worker.html"
                 },1500)
@@ -66,7 +74,10 @@ $(document).ready(()=>{
                 $('.alert-info').hide()
                 $('.alert-warning').hide()
                 $('.alert-danger').hide()
-                localStorage.setItem('email',response.data.email)
+                console.log($('#email').val(""))
+                console.log($('#password').val(""))
+                    
+                    localStorage.setItem('email',response.data.email)
                     setTimeout(()=>{    
                     window.location.href = "./Laboratory officer.html"
                 },1500)
@@ -77,7 +88,10 @@ $(document).ready(()=>{
                 $('.alert-info').hide()
                 $('.alert-warning').hide()
                 $('.alert-danger').hide()
-                localStorage.setItem('email',response.data.email)
+                console.log($('#email').val(""))
+                console.log($('#password').val(""))
+                    
+                    localStorage.setItem('email',response.data.email)
                     setTimeout(()=>{    
                     window.location.href = "./admin.html"
                 },1500)

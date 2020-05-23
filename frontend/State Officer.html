@@ -144,14 +144,10 @@
             if($('#case_id').val()){
                 console.log($(this).attr('id'))
                 if($(this).attr('id')==="case"){
-                    localStorage.setItem('id','case')
-                    localStorage.setItem('case',$('#case_id').val())
-                    window.location.href = "./state_officer_details.html"
+                    window.location.assign("./state_officer_details.html?id=case&case="+$('#case_id').val())
                 }
                 else if($(this).attr('id')==="form"){
-                    localStorage.setItem('id','form')
-                    localStorage.setItem('case',$('#case_id').val())
-                    window.location.href = "./state_officer_details.html"
+                    window.location.assign("./state_officer_details.html?id=form&case="+$('#case_id').val())
                 }
             }
             else{

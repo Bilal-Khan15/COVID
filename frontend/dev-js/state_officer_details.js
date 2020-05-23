@@ -2,27 +2,49 @@ $(document).ready(()=>{
 
     console.log('state officer details')    
     let api = new API()
-
-    const id = localStorage.getItem('id')
-    const case_id = localStorage.getItem('case')
+    function getParameter(name){
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results==null) {
+           return null;
+        }
+        return decodeURI(results[1]) || 0;
+    }
+    const id = getParameter('id')
+    const case_id = getParameter('case')
     
     console.log(id,case_id)
     if(id==="case"){
         let response = api.getCaseByID({id: case_id}).then(resolve=>{
-            console.log(resolve.triage[0])
-            setDetails(resolve.triage[0])
+            console.log(resolve.triage.length)
+            if(resolve.triage.length>0){
+                setDetails(resolve.triage[0])
+            }
+            else{
+                $('.text-no').show()
+            }
         })
     }
     else if(id==="form"){
         let response = api.getCaseByID({id: case_id}).then(resolve=>{
             console.log(resolve.triage[0])
-            setDetails1(resolve.triage[0])
+            if(resolve.triage.length>0){
+                setDetails1(resolve.triage[0])
+            }
+            else{
+                $('.text-no').show()
+            }
         })
     }
     else{
+        console.log('err')
         let response = api.getAggregate().then(resolve=>{
             console.log(resolve)
-            setDetails2(resolve)
+            // if(resolve){
+                setDetails2(resolve)
+            // }
+            // else{
+            //     $('.text-no').show()
+            // }
         })
     }
 
@@ -40,8 +62,13 @@ $(document).ready(()=>{
         htmlStr+='<td>'+data.sex+'</td>'
         htmlStr+='</tr>'
         htmlStr+='<tr>'
+
+        let dob = new Date(data.dob)
+        let curr = new Date()
+
+
         htmlStr+='<th class="th-sm">Age</th>'
-        htmlStr+='<td>'+data.dob+'</td>'
+        htmlStr+='<td>'+(curr.getFullYear()-dob.getFullYear())+'</td>'
         htmlStr+='</tr>'
         htmlStr+='<tr>'
         htmlStr+='<th class="th-sm">Mobile</th>'

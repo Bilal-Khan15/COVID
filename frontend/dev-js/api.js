@@ -181,7 +181,15 @@ class API{
                 $('.alert-warning').hide()
                 $('.alert-danger').hide()
 
+                console.log($('#fname').val(""))
+                console.log($('#lname').val(""))
+                console.log($('#password').val(""))
+                console.log($('#repass').val(""))
+                console.log($('#email').val(""))
+                console.log($('#institution').val(""))
+                console.log($('#phone').val(""))
                 setTimeout(()=>{
+            
                     window.location.href="./login.html"
                 },1500)
             }
