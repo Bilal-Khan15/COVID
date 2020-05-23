@@ -89,8 +89,7 @@ $(document).ready(()=>{
     })
 
     $(document).on('click','.update_case',function(){
-        // email  = localStorage.getItem('email')
-        $('#myModal').modal()
+        email  = localStorage.getItem('email')
         let packet = {
             "fname": $('#fname').val(),
             "lname": $("#lname").val(),
@@ -109,13 +108,17 @@ $(document).ready(()=>{
             "contact_case": contact_case,
             "hf": hf
         }
+        let htmlStr =''
+        htmlStr +=  '<p class="title">First Name : '+packet.fname+'<br>Last Name : '+packet.lname+
+            '<br>Sex : '+packet.sex+'<br>DOB : '+packet.dob+'<br>Email : '+packet.email
+        $('#care-content').html(htmlStr)
         console.log(packet)
-        // api.createTriage(packet)
+        api.createTriage(packet)
     })
     $('.save').click(function(e){
         let packet={email:$("#email").val(), dead: dead}
         console.log(packet)
-        api.dead(packet )
+        api.dead(packet)
     })
     $('.ssclose').click(function(e){
         window.location.href="./followup.html"
