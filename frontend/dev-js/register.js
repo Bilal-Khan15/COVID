@@ -63,10 +63,6 @@ $(document).ready(()=>{
                 hf= false
             }
         }
-        else if(val==='yes'||val==='no'){
-            nig = val
-            console.log(nig)    
-        }
         else if(val==="dead"){
             if(!dead){
                 dead = true
@@ -84,11 +80,17 @@ $(document).ready(()=>{
         if($(this).attr('id')=='gender'){
             sex = $(this).val()
             console.log(sex)    
+        }
+        else{
+            nig = $(this).val()
+            console.log(nig)    
+    
         }        
     })
 
     $(document).on('click','.update_case',function(){
         // email  = localStorage.getItem('email')
+        $('#myModal').modal()
         let packet = {
             "fname": $('#fname').val(),
             "lname": $("#lname").val(),
@@ -108,13 +110,16 @@ $(document).ready(()=>{
             "hf": hf
         }
         console.log(packet)
-        api.createTriage(packet)
+        // api.createTriage(packet)
     })
     $('.save').click(function(e){
         let packet={email:$("#email").val(), dead: dead}
         console.log(packet)
         api.dead(packet )
     })
+    $('.ssclose').click(function(e){
+        window.location.href="./followup.html"
 
+    })
     
 })

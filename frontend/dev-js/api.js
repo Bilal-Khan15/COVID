@@ -156,7 +156,7 @@ class API{
         
             $('.edit_success1').show()
             setTimeout(()=>{
-                // window.location.href="./followup.html"
+                window.location.href="./followup.html"
             },1000)
         
             
