@@ -1,4 +1,6 @@
 let url = "http://127.0.0.1:5000/"
+
+let reset=0
 class API{
 
 
@@ -269,6 +271,35 @@ class API{
     
     } 
 
+    checkEmail = (payload)=>{
+        axios.post(url+'checkEmail',payload,{
+            headers:{
+                "Content-Type" : "application/json"
+            }
+        })
+        .then(response=>{
+            console.log(response)
+        
+            $('#reset-pass').show()
+
+            
+            
+        })
+        .catch(err=>{
+            console.log(err.response) 
+            reset = reset+1
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            $('.alert-info').show()
+            $('.alert-success').hide()
+            $('.alert-warning').hide()
+            $('.alert-danger').hide()
+            setTimeout(function(){ x.className = x.className.replace("show", "");  }, 1000);
+
+            if(reset==2)
+                setTimeout(function(){ window.location.href="./signup.html"  }, 1000);
+        })
+    }
     resetPassword = (payload)=>{
         axios.put(url+'resetPassword',payload,{
             headers:{

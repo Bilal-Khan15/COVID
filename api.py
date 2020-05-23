@@ -34,8 +34,8 @@ class Triage(pw.Model):
     dead = pw.BooleanField()
     status = pw.TextField()
     reg_date = pw.TextField()
-    evacuate = pw.TextField()
-    discharge = pw.TextField()
+    evacuate = pw.BooleanField()
+    discharge = pw.BooleanField()
     epid = pw.TextField()
     center = pw.TextField()
     outcome = pw.TextField()
@@ -248,7 +248,7 @@ def create_triage():
         
     # Create Entry
     Triage.create_table()
-    triage = Triage(fname=data['fname'], lname=data['lname'], sex=data['sex'], dob=data['dob'], mobile=data['mobile'], email=data['email'], address=data['address'], id_number=data['id'], nig=data['nig'], fever=data['fever'], cough=data['cough'], breath=data['breath'], other=data['other'], travel=data['travel'], contact_case=data['contact_case'], hf=data['hf'], dead=False, throat=False, hospital="", status=status, reg_date=reg_date, evacuate="", discharge="", epid="", center="", outcome="", current_status="Suspected")
+    triage = Triage(fname=data['fname'], lname=data['lname'], sex=data['sex'], dob=data['dob'], mobile=data['mobile'], email=data['email'], address=data['address'], id_number=data['id'], nig=data['nig'], fever=data['fever'], cough=data['cough'], breath=data['breath'], other=data['other'], travel=data['travel'], contact_case=data['contact_case'], hf=data['hf'], dead=False, throat=False, hospital="", status=status, reg_date=reg_date, evacuate=False, discharge=False, epid="", center="", outcome="", current_status="Suspected")
     triage.save()
 
     # Return Response

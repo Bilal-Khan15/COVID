@@ -6,7 +6,7 @@ $(document).ready(()=>{
 
     let response = api.getRoles().then(resolve=>{
         resolve.Role.forEach(element => {
-            $('#institution').append('<option style="color: black;">'+element.role+'</option>')
+            $('#institution').append('<option style="color: black;">'+element.name+'</option>')
         });
 
     })
@@ -41,7 +41,10 @@ $(document).ready(()=>{
             return val.id == $(this).attr('id')
         })
         console.log(backup)
-        $('#enable').attr('checked',backup[0].enable)
+        enable =backup[0].enable
+        if(backup[0].enable)
+            $('#enable').attr('checked',true)
+    
         email = backup[0].email
         let htmlStr = ''
         htmlStr += 'Username : '+backup[0].user_name+'<br>'
@@ -55,25 +58,29 @@ $(document).ready(()=>{
     })
 
     let enable = false
-    $(document).on('change','#enable',function(){
+    $(document).on('click','#enable',function(){
         if(enable)
-            enable=true
-        else
             enable=false
+        else
+            enable=true
+
+        console.log(enable)
     })
     $(document).on('click','.save',function(){
         let role = $('#institution').val()
         console.log(enable,role)
         if(role!=='Select Institution'){
+            $('.alert-warning').hide()
             let packet = {
                 email : email,
                 enable: enable,
                 institution: role,
             }
+            console.log(packet)
             api.editUser(packet)
         }
         else{
-            alert()
+            $('.alert-warning').show()
         }
     })
 })

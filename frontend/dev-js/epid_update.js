@@ -52,18 +52,18 @@ $(document).ready(()=>{
         console.log(val)
         if(val==="evacuate"){
             if(evacuate){
-                evacuate = true
+                evacuate = false
             }
             else{
-                evacuate = false
+                evacuate = true
             }
         }
         else if(val==="discharge"){
             if(discharge){
-                discharge = true
+                discharge = false
             }
             else{
-                discharge = false
+                discharge = true
             }
         }
     })

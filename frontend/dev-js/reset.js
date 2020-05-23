@@ -8,6 +8,16 @@ $(document).ready(()=>{
         
         e.preventDefault()
         console.log($('#email').val())
+      
+            let packet = {
+                "email": $('#email').val(),
+            }
+            api.checkEmail(packet)
+    })
+    $('#pass-reset').submit(function(e){
+        
+        e.preventDefault()
+        console.log($('#email').val())
         console.log($('#password').val())
         console.log($('#repass').val())
       

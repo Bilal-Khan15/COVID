@@ -88,11 +88,12 @@ $(document).ready(()=>{
                 $('.alert-info').hide()
                 $('.alert-warning').hide()
                 $('.alert-danger').hide()
-                console.log($('#email').val(""))
-                console.log($('#password').val(""))
                     
-                    localStorage.setItem('email',response.data.email)
-                    setTimeout(()=>{    
+                localStorage.setItem('email',response.data.email)
+                setTimeout(()=>{    
+                    console.log($('#email').val(""))
+                    console.log($('#password').val(""))
+                    
                     window.location.href = "./admin.html"
                 },1500)
     
