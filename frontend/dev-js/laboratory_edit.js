@@ -65,9 +65,25 @@ $(document).ready(()=>{
         console.log(packet)
         let res = api.createLab(packet).then(resolve=>{
             console.log(resolve)
+            console.log(resolve.data)
+        
             if(resolve.data.message == "New Lab registered!"){
                 $('#status_result').html(resolve.data.status)
+                $('.edits').hide()
+                $('.adds').show()
+                $("#types").val("")
+                $("#condition").val("")
+                $("#collection_date").val("")
+                $("#lab_date").val("")
+                $("#test").val("")
+                $("#viral").val("")
+                $("#diagnosis").val("") 
+                $("#epid").val("")    
                 $('#myModal').modal()
+            }
+            if(resolve.statusText == "BAD REQUEST"){
+                $('.edits').show()
+                $('.adds').hide()
             }
 
         })

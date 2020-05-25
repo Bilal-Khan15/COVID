@@ -69,6 +69,7 @@ class API{
         
         })
         .catch(err=>{
+            return err.response
             console.log(err.response)            
         })
 
@@ -85,6 +86,15 @@ class API{
         .then(response=>{
             console.log(response)
             $('.edit_success').show()
+            $('#fname').val("")
+            $("#lname").val("")
+            $("#dob").val("")
+            $("#mobile").val("")
+            $("#email").val("")
+            $("#address").val("")
+            $('#epid_id').val("")
+            $('#other_val').val("")
+
             $('#status_result').html(response.data.status)
             $('#myModal').modal()
             setTimeout(()=>{
@@ -197,7 +207,8 @@ class API{
             }
         })
         .catch(err=>{
-            if(err.response.data==="Error: Email Already Exists"){
+            console.log(err.response)
+            if(err.response.statusText == "BAD REQUEST"){
                 var x = document.getElementById("snackbar");
                 x.className = "show";
                 $('.alert-info').show()
@@ -208,7 +219,7 @@ class API{
 
                 // alert('Error: Email Already Exists')
             }
-            if(err.response.data==="Error: Passwords Mismatched"){
+            if(err.response.data.includes("Error: Passwords Mismatched")){
                 var x = document.getElementById("snackbar");
                 x.className = "show";
                 $('.alert-info').hide()
@@ -219,7 +230,7 @@ class API{
                 
                 // alert('Error: Passwords Mismatched')
             }
-            if(err.response.data==="Error: Form Fields Missing"){
+            if(err.response==="Error: Form Fields Missing"){
                 var x = document.getElementById("snackbar");
                 x.className = "show";
                 $('.alert-info').hide()
@@ -339,6 +350,9 @@ class API{
         .then(response=>{
             console.log(response)
             $('.add_success').show()
+            $('#name').val("")
+            $('#role').val("")
+    
             setTimeout(()=>{
                 window.location.reload()
             },1000)
@@ -361,6 +375,9 @@ class API{
             console.log(response)
         
             $('.edit_success').show()
+            $('#names').val("")
+            $('#roles').val("")
+    
             setTimeout(()=>{
                 window.location.reload()
             },1000)
@@ -397,6 +414,9 @@ class API{
         .then(response=>{
             console.log(response)
             $('.add_success').show()
+            $('#name').val("")
+            $('#role').val("")
+    
             setTimeout(()=>{
                 window.location.reload()
             },1000)
@@ -417,7 +437,9 @@ class API{
         })
         .then(response=>{
             console.log(response)
-        
+            $('#names').val("")
+            $('#roles').val("")
+    
             $('.edit_success').show()
             setTimeout(()=>{
                 window.location.reload()

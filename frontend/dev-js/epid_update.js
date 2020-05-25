@@ -73,8 +73,8 @@ $(document).ready(()=>{
             "email": email,
             "evacuate": evacuate,
             "discharge": discharge,
-            "epid": "epid",
-            "center": "center"
+            "epid": $('#epid').val(),
+            "center": $('#test-center').val()
         }
         console.log(packet)
         api.updateEpid(packet)
