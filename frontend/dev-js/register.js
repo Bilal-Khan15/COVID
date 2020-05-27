@@ -3,7 +3,7 @@ $(document).ready(()=>{
     
     let api = new API()
 
-    let fever=false,cough=false,throat=false,dead=false,breath=false,sex='',nig=false,contact_case=false,hf=false,travel=false;
+    let fever=false,cough=false,throat=false,dead=false,breath=false,sex='',nig=false,contact_case=false,hf=false,travel=false,dk=false;
 
     $("input[type='checkbox']").change(function(){
         let val = $(this).val()
@@ -73,6 +73,18 @@ $(document).ready(()=>{
                 console.log(dead)
             }
         }
+        else if(val==="dk"){
+            if(!dk){
+                dk = true
+                console.log(dk)
+                $('#dob').attr('disabled',dk)
+            }
+            else{
+                dk= false
+                console.log(dk)
+                $('#dob').attr('disabled',dk)
+            }
+        }
     })
     
 
@@ -94,7 +106,7 @@ $(document).ready(()=>{
             "fname": $('#fname').val(),
             "lname": $("#lname").val(),
             "sex": sex,
-            "dob": $("#dob").val(),
+            "dob": !dk ? $("#dob").val() : "N/A",
             "mobile": $("#mobile").val(),
             "email": $("#email").val(),
             "address": $("#address").val(),

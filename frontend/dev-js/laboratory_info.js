@@ -38,10 +38,16 @@ $(document).ready(()=>{
         htmlStr+='<th class="th-sm">Sex</th>'
         htmlStr+='<td>'+data.sex+'</td>'
         htmlStr+='</tr>'
+        
+        
+        let dob = new Date(data.dob)
+        let curr = new Date()
         htmlStr+='<tr>'
         htmlStr+='<th class="th-sm">Age</th>'
-        htmlStr+='<td>'+data.dob+'</td>'
+        htmlStr+='<td>'+(data.dob=="N/A"? data.dob : (curr.getFullYear()-dob.getFullYear()) )+'</td>'    
         htmlStr+='</tr>'
+
+        
         htmlStr+='<tr>'
         htmlStr+='<th class="th-sm">Mobile</th>'
         htmlStr+='<td>'+data.mobile+'</td>'
