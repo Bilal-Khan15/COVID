@@ -85,6 +85,7 @@ $(document).ready(()=>{
                 $('#dob').attr('disabled',dk)
             }
         }
+        else{}
     })
     
 
@@ -100,8 +101,10 @@ $(document).ready(()=>{
         }        
     })
 
+    let select_email='';
     $(document).on('click','.update_case',function(){
         email  = localStorage.getItem('email')
+        select_email =$("#email").val();
         let packet = {
             "fname": $('#fname').val(),
             "lname": $("#lname").val(),
@@ -128,7 +131,7 @@ $(document).ready(()=>{
         api.createTriage(packet)
     })
     $('.save').click(function(e){
-        let packet={email:$("#email").val(), dead: dead}
+        let packet={email:select_email, dead: dead}
         console.log(packet)
         api.dead(packet)
     })
