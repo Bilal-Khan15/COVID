@@ -279,15 +279,7 @@
                             <strong id="status_result"></strong>
                         </div>
                     </div>
-                    <div id="care-content"></div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox"  id="cr" value="cr" >
-                        <span class="form-check-sign"></span>
-                            Information given by care giver 
-                        </label>
-                    </div>
-
+                    <!-- <div id="care-content"></div> -->
                     <div class="form-check">
                         <label class="form-check-label">
                             <input class="form-check-input" type="checkbox" value="dead" id="dead">
@@ -295,9 +287,41 @@
                                 Dead 
                         </label>
                     </div>
-                    <div class="alert alert-success edit_success1 mt-3" role="alert" style="display: none;">
-                        <div class="container">
-                            <strong>Updated Successfully!</strong>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox"  id="cr" value="cr" >
+                        <span class="form-check-sign"></span>
+                            Information given by care giver 
+                        </label>
+                    </div>
+                    <div id="careform" style="display: none;margin-top: 5px;">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="First Name" id="fname1" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Last Name" class="form-control" id="lname1" required/>
+                        </div>
+                        <div class="form-group">
+                            <select id="sex1" class="form-control">
+                                <option>Select Sex</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="datepicker-container">
+                            <label>DOB</label>
+                            <div class="form-group">
+                            <input type="date" id="dob1" class="form-control date-picker" data-datepicker-color="primary" placeholder="DOB">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Email" id="email1" required>
+                        </div>
+                        <div class="alert alert-success edit_success1 mt-3" role="alert" style="display: none;">
+                            <div class="container">
+                                <strong>Updated Successfully!</strong>
+                            </div>
                         </div>
                     </div>
                 </div>

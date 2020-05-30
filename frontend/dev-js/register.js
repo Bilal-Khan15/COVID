@@ -2,8 +2,7 @@ $(document).ready(()=>{
 
     
     let api = new API()
-
-    let fever=false,cough=false,throat=false,dead=false,breath=false,sex='',nig=false,contact_case=false,hf=false,travel=false,dk=false;
+    let caregiver=false,fever=false,cough=false,throat=false,dead=false,breath=false,sex='',nig=false,contact_case=false,hf=false,travel=false,dk=false;
 
     $("input[type='checkbox']").change(function(){
         let val = $(this).val()
@@ -84,6 +83,18 @@ $(document).ready(()=>{
                 console.log(dk)
                 $('#dob').attr('disabled',dk)
             }
+        }        
+        else if(val==="cr"){
+            if(!caregiver){
+                caregiver = true
+                console.log(caregiver)
+                $('#careform').show()
+            }
+            else{
+                dk= false
+                console.log(caregiver)
+                // $('#careform').hide()
+            }
         }
         else{}
     })
@@ -105,6 +116,7 @@ $(document).ready(()=>{
     $(document).on('click','.update_case',function(){
         email  = localStorage.getItem('email')
         select_email =$("#email").val();
+        $('#email1').val(select_email)
         let packet = {
             "fname": $('#fname').val(),
             "lname": $("#lname").val(),
@@ -131,7 +143,15 @@ $(document).ready(()=>{
         api.createTriage(packet)
     })
     $('.save').click(function(e){
-        let packet={email:select_email, dead: dead}
+        
+        let packet={
+            email:select_email, 
+            dead: dead,
+            "fname": $('#fname1').val(),
+            "lname": $('#lname1').val(),
+            "sex": $('#sex1').val(),
+            "dob": $('#dob1').val(),
+        }
         console.log(packet)
         api.dead(packet)
     })

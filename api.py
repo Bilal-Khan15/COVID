@@ -264,9 +264,15 @@ def dead():
     # Update Symptoms
     triage = Triage.get(Triage.email == data['email'])
     triage.dead = data['dead']
+    triage.fname = data['fname']
+    triage.lname = data['lname']
+    triage.sex = data['sex']
+    triage.dob = data['dob']
+    triage.email = data['email']
     triage.save()
 
     return jsonify({'Message': 'Triage has been updated'})
+
 
 
 @cross_origin
